@@ -4,14 +4,13 @@ import Header from './Header'
 import ListBook from "./ListBook";
 import '../styles/App.css'
 import BookSearch from "./BookSearch";
-//import * as BooksAPI from '../utils/BooksAPI'
 
 class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
         <Route path="/search" render={() => (
-          <BookSearch />
+          <BookSearch/>
         )}/>
 
         <Route exact path="/" render={() => (
@@ -19,8 +18,7 @@ class BooksApp extends React.Component {
             <Header name="My Reads"/>
             <ListBook/>
             <div className="open-search">
-            <Link to="/search">
-            </Link>
+              <Link to="/search"/>
             </div>
           </div>
         )}/>
@@ -30,3 +28,4 @@ class BooksApp extends React.Component {
 }
 
 export default BooksApp
+
