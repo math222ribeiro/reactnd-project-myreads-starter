@@ -1,8 +1,10 @@
 import React from 'react'
+import {Route, Link} from 'react-router-dom'
 import Header from './Header'
 import ListBook from "./ListBook";
 import '../styles/App.css'
 import BookSearch from "./BookSearch";
+
 // import * as BooksAPI from './BooksAPI'
 
 class BooksApp extends React.Component {
@@ -22,17 +24,19 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <BookSearch toggleSearch={this.toggleSearch}/>
-        ) : (
+        <Route path="/search" render={() => (
+          <BookSearch />
+        )}/>
+
+        <Route exact path="/" render={() => (
           <div className="list-books">
             <Header name="My Reads"/>
-            <ListBook />
-            <div className="open-search">
-              <a onClick={this.toggleSearch}>Add a book</a>
-            </div>
+            <ListBook/>
+            <Link className="open-search" to="/search">
+              <a>Add a book</a>
+            </Link>
           </div>
-        )}
+        )}/>
       </div>
     )
   }
