@@ -30,6 +30,10 @@ class BookSearch extends Component {
     }
   };
 
+  handleBookMoved = (book, shelf) => {
+    BooksAPI.update(book, shelf);
+  };
+
   render() {
     const { query, books } = this.state;
 
@@ -49,10 +53,9 @@ class BookSearch extends Component {
           <ol className="books-grid">
             {books.map((book) => (
               <Book
-                title={book.title}
-                authors={book.authors}
-                imgURL={book.imageLinks.thumbnail}
-                key={book.industryIdentifiers[0].identifier}
+                book={book}
+                key={book.id}
+                onBookMoved={this.handleBookMoved}
               />
             ))}
           </ol>

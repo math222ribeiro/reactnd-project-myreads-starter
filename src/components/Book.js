@@ -1,18 +1,12 @@
 import React, {Component} from 'react'
 
 class Book extends Component {
-  state = {
-    bookshelf: "none"
-  };
-
   handleBookshelfChange = (e) => {
-    this.setState({
-      bookshelf: e.target.value
-    })
+    this.props.onBookMoved(this.props.book, e.target.value);
   };
 
   render() {
-    const {authors, title, imgURL} = this.props;
+    const {authors, title, imageLinks, shelf} = this.props.book;
 
     return (
       <li>
@@ -21,10 +15,10 @@ class Book extends Component {
             <div className="book-cover" style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${imgURL})`
+              backgroundImage: `url(${imageLinks.thumbnail})`
             }}/>
             <div className="book-shelf-changer">
-              <select value={this.state.bookshelf} onChange={this.handleBookshelfChange} >
+              <select value={shelf} onChange={this.handleBookshelfChange} >
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
