@@ -4,23 +4,9 @@ import Header from './Header'
 import ListBook from "./ListBook";
 import '../styles/App.css'
 import BookSearch from "./BookSearch";
-
-// import * as BooksAPI from './BooksAPI'
+//import * as BooksAPI from '../utils/BooksAPI'
 
 class BooksApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showSearchPage: false
-    };
-  }
-
-  toggleSearch = () => {
-    this.setState((prevState) => ({
-      showSearchPage: !prevState.showSearchPage
-    }));
-  };
-
   render() {
     return (
       <div className="app">
@@ -32,9 +18,10 @@ class BooksApp extends React.Component {
           <div className="list-books">
             <Header name="My Reads"/>
             <ListBook/>
-            <Link className="open-search" to="/search">
-              <a>Add a book</a>
+            <div className="open-search">
+            <Link to="/search">
             </Link>
+            </div>
           </div>
         )}/>
       </div>
