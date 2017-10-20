@@ -5,40 +5,33 @@ import PageLoader from './PageLoader'
 import Book from "./Book";
 
 class BookSearch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-      books: [],
-      loading: false
-    }
-  }
+  state = {
+    query: '',
+    books: [],
+    loading: false
+  };
 
   handleChange = (e) => {
     const query = e.target.value;
-    this.setState({loading: true});
+    this.setState({
+      loading: true,
+      query: e.target.value
+    });
 
     if (query) {
       BooksAPI.search(query).then((res) => {
         const books = res.error ? [] : res;
-        this.getBooksShelf(books);
+        this.setState({
+          books: this.updateBooksShelf(this.props.booksOnShelf, books),
+          loading: false
+        });
       })
     } else {
-      this.setState({books: []});
-      this.setState({loading: false});
+      this.setState({
+        books: [],
+        loading: false
+      });
     }
-
-    this.setState({
-      query: e.target.value
-    });
-  };
-
-  getBooksShelf = (allBooks) => {
-    BooksAPI.getAll().then((res) => {
-      this.setState({loading: false});
-      const booksOnShelf = res.error ? [] : res;
-      this.setState({books: this.updateBooksShelf(booksOnShelf, allBooks)});
-    })
   };
 
   updateBooksShelf = (booksOnShelf, allBooks) => {
@@ -49,18 +42,17 @@ class BookSearch extends Component {
         }
       }
     }
-    console.log(allBooks);
     return allBooks;
   };
 
   handleBookMoved = (book, shelf, toogleAnimation) => {
-    BooksAPI.update(book, shelf).then(() => toogleAnimation());
-    book.shelf = shelf;
+    //BooksAPI.update(book, shelf).then(() => toogleAnimation());
+    //book.shelf = shelf;
+    this.props.onBookMoved(book, shelf, toogleAnimation);
   };
 
   render() {
     const {query, books} = this.state;
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -76,14 +68,14 @@ class BookSearch extends Component {
             <PageLoader/>
           ) : (
             <ol className="books-grid">
-            {books.map((book) => (
-              <Book
-                book={book}
-                key={book.id}
-                onBookMoved={this.handleBookMoved}
-              />
-            ))}
-          </ol>)}
+              {books.map((book) => (
+                <Book
+                  book={book}
+                  key={book.id}
+                  onBookMoved={this.handleBookMoved}
+                />
+              ))}
+            </ol>)}
 
         </div>
       </div>
