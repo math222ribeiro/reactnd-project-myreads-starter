@@ -25,9 +25,28 @@ class BookSearch extends Component {
     if (query) {
       BooksAPI.search(query, 3).then((res) => {
         const books = res.error ? [] : res;
-        this.setState({ books });
+        this.getBooksShelf(books);
       })
     }
+  };
+
+  getBooksShelf = (allBooks) => {
+    BooksAPI.getAll().then((res) => {
+      const booksOnShelf = res.error ? [] : res;
+      this.setState({ books: this.updateBooksShelf(booksOnShelf, allBooks)} );
+    })
+  };
+
+  updateBooksShelf = (booksOnShelf, allBooks) => {
+      for (let i = 0; i < allBooks.length; i++) {
+        for (let j = 0; j < booksOnShelf.length; j++) {
+          if (allBooks[i].id === booksOnShelf[j].id) {
+            allBooks[i].shelf = booksOnShelf[j].shelf;
+          }
+        }
+      }
+
+      return allBooks;
   };
 
   handleBookMoved = (book, shelf) => {
