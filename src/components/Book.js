@@ -1,9 +1,26 @@
 import React, {Component} from 'react'
+import BookLoader from './BookLoader'
 
 class Book extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      changing: false,
+    };
+
+    this.toggleState = this.toggleState.bind(this);
+  }
+
   handleBookshelfChange = (e) => {
-    this.props.onBookMoved(this.props.book, e.target.value);
+    this.toggleState();
+    this.props.onBookMoved(this.props.book, e.target.value, this.toggleState);
   };
+
+  toggleState() {
+    this.setState((prevState) => ({
+        changing: !prevState.changing
+    }))
+  }
 
   render() {
     const {authors, title, imageLinks, shelf} = this.props.book;
@@ -16,7 +33,7 @@ class Book extends Component {
               width: 128,
               height: 193,
               backgroundImage: `url(${imageLinks.thumbnail})`
-            }}/>
+            }}> {(this.state.changing && <BookLoader />)} </div>
             <div className="book-shelf-changer">
               <select value={shelf || "none"} onChange={this.handleBookshelfChange} >
                 <option value="none" disabled>Move to...</option>

@@ -53,8 +53,9 @@ class BookSearch extends Component {
     return allBooks;
   };
 
-  handleBookMoved = (book, shelf) => {
-    BooksAPI.update(book, shelf);
+  handleBookMoved = (book, shelf, toogleAnimation) => {
+    BooksAPI.update(book, shelf).then(() => toogleAnimation());
+    book.shelf = shelf;
   };
 
   render() {
