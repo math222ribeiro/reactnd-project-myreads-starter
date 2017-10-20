@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from '../utils/BooksAPI'
+import PageLoader from './PageLoader'
 import Book from "./Book";
 
 class BookSearch extends Component {
@@ -8,12 +9,14 @@ class BookSearch extends Component {
     super(props);
     this.state = {
       query: '',
-      books: []
+      books: [],
+      loading: false
     }
   }
 
   handleChange = (e) => {
     const query = e.target.value;
+    this.setState({loading: true});
 
     if (query) {
       BooksAPI.search(query).then((res) => {
@@ -21,7 +24,8 @@ class BookSearch extends Component {
         this.getBooksShelf(books);
       })
     } else {
-      this.setState({books: []})
+      this.setState({books: []});
+      this.setState({loading: false});
     }
 
     this.setState({
@@ -31,6 +35,7 @@ class BookSearch extends Component {
 
   getBooksShelf = (allBooks) => {
     BooksAPI.getAll().then((res) => {
+      this.setState({loading: false});
       const booksOnShelf = res.error ? [] : res;
       this.setState({books: this.updateBooksShelf(booksOnShelf, allBooks)});
     })
@@ -66,7 +71,10 @@ class BookSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
+          {this.state.loading ? (
+            <PageLoader/>
+          ) : (
+            <ol className="books-grid">
             {books.map((book) => (
               <Book
                 book={book}
@@ -74,7 +82,8 @@ class BookSearch extends Component {
                 onBookMoved={this.handleBookMoved}
               />
             ))}
-          </ol>
+          </ol>)}
+
         </div>
       </div>
     )

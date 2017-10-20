@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import Bookshelf from "./Bookshelf";
+import PageLoader from './PageLoader'
 import * as BooksAPI from '../utils/BooksAPI'
 
 class ListBook extends Component {
   state = {
-    books: []
+    books: [],
+    loading: false
   };
 
   componentDidMount() {
@@ -12,8 +14,10 @@ class ListBook extends Component {
   }
 
   getAllBooks = () => {
+    this.setState({loading: true});
     BooksAPI.getAll().then((books) => {
       this.setState({books});
+      this.setState({loading: false});
     })
   };
 
@@ -21,7 +25,7 @@ class ListBook extends Component {
     BooksAPI.update(changedBook, shelf).then(() => {
       changedBook.shelf = shelf;
       this.setState((prevState) => {
-        books: prevState.books.filter(book => book.id !== changedBook.id).concat([changedBook])
+        prevState.books.filter(book => book.id !== changedBook.id).concat([changedBook])
       });
     })
   };
@@ -32,7 +36,9 @@ class ListBook extends Component {
     const wantToRead = allBooks.filter(book => book.shelf === 'wantToRead');
     const read = allBooks.filter(book => book.shelf === 'read');
 
-    return (
+    return this.state.loading ? (
+      <PageLoader />
+    ) : (
       <div className="list-books-content">
         <div>
           <Bookshelf name="Currently Reading" books={currentlyReading} onBookMoved={this.onBookMoved}/>
