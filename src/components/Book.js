@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import BookLoader from './BookLoader'
+import React, {Component} from 'react';
+import BookLoader from './BookLoader';
 
 class Book extends Component {
   constructor(props) {

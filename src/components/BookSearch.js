@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-import * as BooksAPI from '../utils/BooksAPI'
-import PageLoader from './PageLoader'
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import * as BooksAPI from '../utils/BooksAPI';
+import PageLoader from './PageLoader';
 import Book from "./Book";
 
 class BookSearch extends Component {
@@ -56,13 +56,12 @@ class BookSearch extends Component {
   };
 
   handleBookMoved = (book, shelf, toogleAnimation) => {
-    //BooksAPI.update(book, shelf).then(() => toogleAnimation());
-    //book.shelf = shelf;
     this.props.onBookMoved(book, shelf, toogleAnimation);
   };
 
   render() {
-    const {query, books} = this.state;
+    const {query, books, loading} = this.state;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -74,7 +73,7 @@ class BookSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          {this.state.loading ? (
+          {loading ? (
             <PageLoader/>
           ) : (
             <ol className="books-grid">

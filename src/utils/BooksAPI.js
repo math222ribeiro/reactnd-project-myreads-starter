@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import $ from 'jquery';
 
 const api = "https://reactnd-books-api.udacity.com";
 

@@ -1,23 +1,40 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import Bookshelf from "./Bookshelf";
-import PageLoader from './PageLoader'
+import PageLoader from './PageLoader';
 
 class ListBook extends Component {
   render() {
-    const allBooks = this.props.books;
-    const onBookMoved = this.props.onBookMoved;
-    const currentlyReading = allBooks.filter(book => book.shelf === 'currentlyReading');
-    const wantToRead = allBooks.filter(book => book.shelf === 'wantToRead');
-    const read = allBooks.filter(book => book.shelf === 'read');
+    this.allBooks = this.props.books;
+    const shelves = [
+      {
+        id: "currentlyReading",
+        name: "Currently Reading"
+      },
+
+      {
+        id: "wantToRead",
+        name: "Want to Read",
+      },
+
+      {
+        id: "read",
+        name: "Read"
+      }
+    ];
 
     return this.props.loading ? (
-      <PageLoader />
+      <PageLoader/>
     ) : (
       <div className="list-books-content">
         <div>
-          <Bookshelf name="Currently Reading" books={currentlyReading} onBookMoved={onBookMoved}/>
-          <Bookshelf name="Want to Read" books={wantToRead} onBookMoved={onBookMoved}/>
-          <Bookshelf name="Read" books={read} onBookMoved={onBookMoved}/>
+          {shelves.map((shelf) => (
+            <Bookshelf
+              name={shelf.name}
+              key={shelf.id}
+              books={this.allBooks.filter(book => book.shelf === shelf.id)}
+              onBookMoved={this.props.onBookMoved}
+            />
+          ))}
         </div>
       </div>
     )
