@@ -5,27 +5,37 @@ import PageLoader from './PageLoader'
 import Book from "./Book";
 
 class BookSearch extends Component {
-  state = {
-    query: '',
-    books: [],
-    loading: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: '',
+      books: [],
+      loading: false
+    };
+    this.request = undefined;
+  }
 
   handleChange = (e) => {
     const query = e.target.value;
-    this.setState({
-      loading: true,
-      query: e.target.value
-    });
+    this.setState({query: e.target.value});
+
+    if (this.request) this.request.abort();
 
     if (query) {
-      BooksAPI.search(query).then((res) => {
-        const books = res.error ? [] : res;
+      this.setState({loading: true});
+
+      this.request = BooksAPI.search(query, 20, (data) => {
+        let books = data.books.error ? [] : data.books;
         this.setState({
           books: this.updateBooksShelf(this.props.booksOnShelf, books),
           loading: false
         });
-      })
+      }, () => (
+        this.setState({
+          books: [],
+          loading: false
+        })
+      ))
     } else {
       this.setState({
         books: [],

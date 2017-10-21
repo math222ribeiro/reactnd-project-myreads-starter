@@ -32,11 +32,11 @@ class Book extends Component {
             <div className="book-cover" style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${imageLinks.thumbnail})`
+              backgroundImage: `url(${imageLinks ? imageLinks.thumbnail : ''})`
             }}> {(this.state.changing && <BookLoader />)} </div>
             <div className="book-shelf-changer">
               <select value={shelf || "none"} onChange={this.handleBookshelfChange} >
-                <option value="none" disabled>Move to...</option>
+                <option value="disabled" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
                 <option value="read">Read</option>

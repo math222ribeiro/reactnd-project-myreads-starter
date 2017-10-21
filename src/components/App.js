@@ -28,9 +28,9 @@ class BooksApp extends React.Component {
     BooksAPI.update(changedBook, shelf).then(() => {
       changedBook.shelf = shelf;
       completion();
-      this.setState((prevState) => {
-        prevState.books.filter(book => book.id !== changedBook.id).concat([changedBook])
-      });
+      this.setState((prevState) => ({
+        books: prevState.books.filter(book => book.id !== changedBook.id).concat([changedBook])
+      }));
     })
   };
 
