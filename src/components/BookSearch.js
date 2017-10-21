@@ -76,15 +76,20 @@ class BookSearch extends Component {
           {loading ? (
             <PageLoader/>
           ) : (
-            <ol className="books-grid">
-              {books.map((book) => (
-                <Book
-                  book={book}
-                  key={book.id}
-                  onBookMoved={this.handleBookMoved}
-                />
-              ))}
-            </ol>)}
+            books.length > 0 ? (
+              <ol className="books-grid">
+                {books.map((book) => (
+                  <Book
+                    book={book}
+                    key={book.id}
+                    onBookMoved={this.handleBookMoved}
+                  />
+                ))}
+              </ol>
+            ) : (
+              <div className="no-books">No books here.</div>
+            )
+          )}
 
         </div>
       </div>
